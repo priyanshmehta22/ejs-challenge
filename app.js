@@ -13,44 +13,44 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.get("/", function(req, res){
-  res.render("home",({homecontent: homeStartingContent,posts:posts}) );
+app.get("/", function (req, res) {
+  res.render("home", ({ homecontent: homeStartingContent, posts: posts }));
 });
 
-app.get("/contact",(req,res)=>{
-  res.render("contact",({contactcon:contactContent}));
+app.get("/contact", (req, res) => {
+  res.render("contact", ({ contactcon: contactContent }));
 });
 
-app.get("/about",(req,res)=>{
-  res.render("about",({aboutcon:aboutContent}));
+app.get("/about", (req, res) => {
+  res.render("about", ({ aboutcon: aboutContent }));
 });
 
-app.get("/compose",(req,res)=>{
+app.get("/compose", (req, res) => {
   res.render("compose");
 });
 
-app.get("/blogs/:journalTitle",(req,res)=>{
+app.get("/blogs/:journalTitle", (req, res) => {
   var reqTitle = req.params.journalTitle;
   reqTitle = _.lowerCase(reqTitle);
-  for(let i=0;i<posts.length;i++){ 
+  for (let i = 0; i < posts.length; i++) {
     posts[i].title = _.lowerCase(posts[i].title);
-    if(posts[i].title===reqTitle){
-      res.render("post",{
+    if (posts[i].title === reqTitle) {
+      res.render("post", {
         title: posts[i].title,
-        content: posts[i].content.substring(0,3)
+        content: posts[i].content
       });
     }
-    
- }
+
+  }
 });
 
-app.post("/compose",(req,res)=>{
+app.post("/compose", (req, res) => {
   console.log(req.body.journalTitle);
   const post = {
-    title:req.body.journalTitle,
+    title: req.body.journalTitle,
     content: req.body.journalBody,
   };
   posts.push(post);
@@ -62,6 +62,6 @@ app.post("/compose",(req,res)=>{
 
 
 
-app.listen(3000, function() {
+app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
